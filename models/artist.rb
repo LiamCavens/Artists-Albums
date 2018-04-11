@@ -1,5 +1,6 @@
 require('pg')
 require_relative('../db/sql_runner.rb')
+require_relative('album.rb')
 
 class Artist
 
@@ -12,14 +13,14 @@ class Artist
     end
 
     def save()
-        sql = "INSERT INTO artists name VALUES $1 RETURNING id;"
+        sql = "INSERT INTO artists (name) VALUES ($1) RETURNING id;"
         values = [@name]
         result = SqlRunner.run(sql, values)
         @id = result[0]["id"].to_i()
     end
 
     def update()
-    sql = "UPDATE artist SET name = $1 WHERE id = $2;"
+    sql = "UPDATE artists SET name = $1 WHERE id = $2;"
     values = [@name, @id]
     SqlRunner.run(sql, values)
     end
@@ -31,7 +32,7 @@ class Artist
     end
 
     def delete()
-    sql = "DELETE FROM artist WHERE id = $1;"
+    sql = "DELETE FROM artists WHERE id = $1;"
     values = [@id]
     SqlRunner.run(sql, values)
     end
